@@ -1,0 +1,9 @@
+{
+  "name": "noir-studio",
+  "version": "1.0.0",
+  "description": "Premium faceless video generation",
+  "main": "index.html",
+  "dependencies": {
+    "node-fetch": "^2.6.7"
+  }
+}

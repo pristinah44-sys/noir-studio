@@ -1,0 +1,33 @@
+[build]
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+```
+
+---
+
+## 💾 WHAT TO DO:
+
+1. Open **TextEdit**
+2. **Format → Make Plain Text**
+3. **Paste** the code from the white box above
+4. **File → Save**
+5. **Save As:** `netlify.toml`
+6. **Where:** Save it in the **noir-studio** folder (same level as index.html)
+7. Click **Save**
+
+---
+
+## ✅ YOUR FOLDER SHOULD NOW BE:
+```
+noir-studio/
+  index.html
+  package.json
+  vercel.json
+  netlify.toml       ← NEW FILE
+  api/
+  netlify/
+    functions/
+      generate.js
+      status.js
