@@ -17,8 +17,8 @@ exports.handler = async function(event, context) {
 
   try {
     var body = JSON.parse(event.body);
-    var prompt = body.prompt || "";
-    var skinTone = body.skinTone || "medium";
+    var prompt = body.prompt;
+    var skinTone = body.skinTone;
     
     var apiKey = process.env.RUNWAY_API_KEY;
     
@@ -26,9 +26,26 @@ exports.handler = async function(event, context) {
       return { statusCode: 500, headers: headers, body: JSON.stringify({ error: "API key not configured" }) };
     }
 
-    var fullPrompt = prompt + ", featuring hands with " + skinTone + " skin tone, ultra-realistic, 4K quality";
+    // Map skin tone to image filename
+    var imageMap = {
+      "Fair Cool": "01-fair-cool.png",
+      "Fair Warm": "02-fair-warm.png",
+      "Fair Neutral": "03-fair-neutral.png",
+      "Medium Cool": "04-medium-cool.png",
+      "Medium Warm": "05-medium-warm.png",
+      "Medium Olive": "06-medium-olive.png",
+      "Tan": "07-tan.png",
+      "Deep Cool": "08-deep-cool.png",
+      "Deep Warm": "09-deep-warm.png",
+      "Deep Rich": "10-deep-rich.png",
+      "Very Deep Cool": "11-very-deep-cool.png",
+      "Very Deep Rich": "12-very-deep-rich.png"
+    };
 
-    var response = await fetch("https://api.dev.runwayml.com/v1/text_to_video", {
+    var imageFile = imageMap[skinTone] || "07-tan.png";
+    var imageUrl = "https://raw.githubusercontent.com/pristinah44-sys/noir-studio/main/images/hands/" + imageFile;
+
+    var response = await fetch("https://api.dev.runwayml.com/v1/image_to_video", {
       method: "POST",
       headers: {
         "Authorization": "Bearer " + apiKey,
@@ -36,10 +53,11 @@ exports.handler = async function(event, context) {
         "X-Runway-Version": "2024-11-06"
       },
       body: JSON.stringify({
-        model: "veo3.1",
-        promptText: fullPrompt,
-        ratio: "720:1280",
-        duration: 4
+        model: "gen3a_turbo",
+        promptImage: imageUrl,
+        promptText: prompt,
+        duration: 5,
+        ratio: "720:1280"
       })
     });
 
