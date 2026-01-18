@@ -26,7 +26,6 @@ exports.handler = async function(event, context) {
       return { statusCode: 500, headers: headers, body: JSON.stringify({ error: "API key not configured" }) };
     }
 
-    // Map skin tone to image filename
     var imageMap = {
       "Fair Cool": "01-fair-cool.png",
       "Fair Warm": "02-fair-warm.png",
@@ -53,7 +52,7 @@ exports.handler = async function(event, context) {
         "X-Runway-Version": "2024-11-06"
       },
       body: JSON.stringify({
-        model: "gen3a_turbo",
+        model: "gen4_turbo",
         promptImage: imageUrl,
         promptText: prompt,
         duration: 5,
