@@ -17,8 +17,8 @@ exports.handler = async function(event, context) {
 
   try {
     var body = JSON.parse(event.body);
-    var prompt = body.prompt;
-    var skinTone = body.skinTone;
+    var prompt = body.prompt || "";
+    var skinTone = body.skinTone || "medium";
     
     var apiKey = process.env.RUNWAY_API_KEY;
     
@@ -36,10 +36,10 @@ exports.handler = async function(event, context) {
         "X-Runway-Version": "2024-11-06"
       },
       body: JSON.stringify({
-        model: "gen3a_turbo",
-        prompt: fullPrompt,
-        duration: 5,
-        ratio: "9:16"
+        model: "veo3.1",
+        promptText: fullPrompt,
+        ratio: "1080:1920",
+        duration: 4
       })
     });
 
