@@ -38,7 +38,7 @@ exports.handler = async function(event, context) {
       body: JSON.stringify({
         model: "veo3.1",
         promptText: fullPrompt,
-        ratio: "1080:1920",
+        ratio: "720:1280",
         duration: 4
       })
     });
