@@ -1,7 +1,7 @@
 const fetch = require("node-fetch");
 
 exports.handler = async function(event, context) {
-  const headers = {
+  var headers = {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Headers": "Content-Type",
     "Access-Control-Allow-Methods": "POST, OPTIONS"
@@ -28,7 +28,7 @@ exports.handler = async function(event, context) {
 
     var fullPrompt = prompt + ", featuring hands with " + skinTone + " skin tone, ultra-realistic, 4K quality";
 
-    var response = await fetch("https://api.dev.runwayml.com/v1/image_to_video", {
+    var response = await fetch("https://api.dev.runwayml.com/v1/text_to_video", {
       method: "POST",
       headers: {
         "Authorization": "Bearer " + apiKey,
@@ -37,19 +37,29 @@ exports.handler = async function(event, context) {
       },
       body: JSON.stringify({
         model: "gen3a_turbo",
-        promptText: fullPrompt,
+        prompt: fullPrompt,
         duration: 5,
         ratio: "9:16"
       })
     });
 
     var data = await response.json();
+    
+    console.log("Runway response:", JSON.stringify(data));
 
-    return {
-      statusCode: 200,
-      headers: headers,
-      body: JSON.stringify({ taskId: data.id, status: "processing" })
-    };
+    if (data.id) {
+      return {
+        statusCode: 200,
+        headers: headers,
+        body: JSON.stringify({ taskId: data.id, status: "processing" })
+      };
+    } else {
+      return {
+        statusCode: 500,
+        headers: headers,
+        body: JSON.stringify({ error: data.error || "No task ID returned", details: data })
+      };
+    }
 
   } catch (error) {
     return { statusCode: 500, headers: headers, body: JSON.stringify({ error: error.message }) };
